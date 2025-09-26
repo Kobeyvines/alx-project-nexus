@@ -1,0 +1,42 @@
+============================= test session starts ==============================
+platform linux -- Python 3.11.7, pytest-8.3.4, pluggy-1.5.0 -- /home/kobey/anaconda3/bin/python
+cachedir: .pytest_cache
+rootdir: /home/kobey/Documents/PROJECTS/alx-project-nexus
+plugins: anyio-4.6.2
+collecting ... collected 0 items / 1 error
+
+==================================== ERRORS ====================================
+___________________ ERROR collecting ecommerce-backend/tests ___________________
+../../../anaconda3/lib/python3.11/importlib/__init__.py:126: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+<frozen importlib._bootstrap>:1204: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1176: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1147: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:690: in _load_unlocked
+    ???
+../../../anaconda3/lib/python3.11/site-packages/_pytest/assertion/rewrite.py:184: in exec_module
+    exec(co, module.__dict__)
+ecommerce-backend/tests/conftest.py:3: in <module>
+    from django.contrib.auth.models import User
+../../../anaconda3/lib/python3.11/site-packages/django/contrib/auth/models.py:5: in <module>
+    from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
+../../../anaconda3/lib/python3.11/site-packages/django/contrib/auth/base_user.py:43: in <module>
+    class AbstractBaseUser(models.Model):
+../../../anaconda3/lib/python3.11/site-packages/django/db/models/base.py:131: in __new__
+    app_config = apps.get_containing_app_config(module)
+../../../anaconda3/lib/python3.11/site-packages/django/apps/registry.py:260: in get_containing_app_config
+    self.check_apps_ready()
+../../../anaconda3/lib/python3.11/site-packages/django/apps/registry.py:137: in check_apps_ready
+    settings.INSTALLED_APPS
+../../../anaconda3/lib/python3.11/site-packages/django/conf/__init__.py:81: in __getattr__
+    self._setup(name)
+../../../anaconda3/lib/python3.11/site-packages/django/conf/__init__.py:61: in _setup
+    raise ImproperlyConfigured(
+E   django.core.exceptions.ImproperlyConfigured: Requested setting INSTALLED_APPS, but settings are not configured. You must either define the environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.
+=========================== short test summary info ============================
+ERROR ecommerce-backend/tests - django.core.exceptions.ImproperlyConfigured: ...
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+=============================== 1 error in 0.20s ===============================

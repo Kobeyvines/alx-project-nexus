@@ -11,15 +11,21 @@ from .views import (
     OrderViewSet,
     CartViewSet,
     CartItemViewSet,   # <-- separate viewset for items
+    ReviewViewSet,
+    WishlistViewSet,
 )
 
 router = DefaultRouter()
 router.register(r"categories", CategoryViewSet)
 router.register(r"products", ProductViewSet)
 router.register(r"users", AdminUserViewSet, basename="users")
+router.register(r"wishlist", WishlistViewSet, basename="wishlist")
 router.register(r"orders", OrderViewSet, basename="orders")
 router.register(r"cart", CartViewSet, basename="cart")
-router.register(r"cart-items", CartItemViewSet, basename="cart-items") 
+router.register(r"cart-items", CartItemViewSet, basename="cartitem")
+router.register(r"reviews", ReviewViewSet, basename="reviews") 
+
+# Nested routes are handled through actions in ProductViewSet
 
 urlpatterns = [
     path("users/me/", UserProfileView.as_view(), name="user-profile"),
