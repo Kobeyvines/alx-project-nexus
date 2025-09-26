@@ -197,14 +197,9 @@ class CartViewSet(ModelViewSet):
     http_method_names = ['get', 'post', 'put', 'patch', 'delete']
 
     def get_queryset(self):
-        user = self.request.user
-        if getattr(self, 'swagger_fake_view', False):
+        if getattr(self, "swagger_fake_view", False):
             return Cart.objects.none()
-        if not user.is_authenticated:
-            return Cart.objects.none()
-        return Cart.objects.filter(user=user)
-
-
+        return Cart.objects.filter(user=self.request.user)
 
     def get_object(self):
         return get_object_or_404(Cart, user=self.request.user)
@@ -237,12 +232,11 @@ class CartItemViewSet(ModelViewSet):
     http_method_names = ['get', 'post', 'put', 'patch', 'delete']
 
     def get_queryset(self):
-        user = self.request.user
-        if getattr(self, 'swagger_fake_view', False):
+        if getattr(self, 'swagger_fake_view', False) or not self.request.user.is_authenticated:
             return CartItem.objects.none()
-        if not user.is_authenticated:
-            return CartItem.objects.none()
-        return CartItem.objects.filter(cart__user=user)
+
+        cart, _ = Cart.objects.get_or_create(user=self.request.user)
+        return cart.items.all()
     
     def perform_create(self, serializer):
         cart = get_object_or_404(Cart, user=self.request.user)
@@ -255,12 +249,10 @@ class OrderViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        user = self.request.user
-        if getattr(self, 'swagger_fake_view', False):
+        if getattr(self, 'swagger_fake_view', False) or not self.request.user.is_authenticated:
             return Order.objects.none()
-        if not user.is_authenticated:
-            return Order.objects.none()
-        return Order.objects.filter(user=user)
+        return Order.objects.filter(user=self.request.user)
+
 
 
     def perform_create(self, serializer):
@@ -466,12 +458,9 @@ class WishlistViewSet(ModelViewSet):
     pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
-        user = self.request.user
-        if getattr(self, 'swagger_fake_view', False):
+        if getattr(self, 'swagger_fake_view', False) or not self.request.user.is_authenticated:
             return WishlistItem.objects.none()
-        if not user.is_authenticated:
-            return WishlistItem.objects.none()
-        return WishlistItem.objects.filter(user=user)
+        return WishlistItem.objects.filter(user=self.request.user).select_related("product")
 
     def perform_create(self, serializer):
         """Create a new wishlist item"""

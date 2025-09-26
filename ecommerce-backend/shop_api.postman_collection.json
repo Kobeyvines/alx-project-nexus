@@ -1,0 +1,223 @@
+{
+  "info": {
+    "name": "Shop API Collection",
+    "_postman_id": "12345-67890-abcdef",
+    "description": "Postman collection to test all Shop API endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8000" },
+    { "key": "access_token", "value": "" },
+    { "key": "refresh_token", "value": "" },
+    { "key": "user_id", "value": "" },
+    { "key": "category_slug", "value": "" },
+    { "key": "product_slug", "value": "" },
+    { "key": "cart_id", "value": "" },
+    { "key": "order_id", "value": "" },
+    { "key": "review_id", "value": "" },
+    { "key": "wishlist_id", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/auth/register/",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"username\": \"testuser\", \"email\": \"test@test.com\", \"password\": \"TestPass123\" }"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base_url}}/auth/login/",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"username\": \"testuser\", \"password\": \"TestPass123\" }"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "let data = pm.response.json();",
+                  "pm.environment.set('access_token', data.access);",
+                  "pm.environment.set('refresh_token', data.refresh);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{access_token}}" }
+            ],
+            "url": "{{base_url}}/auth/logout/"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Me",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/users/me/"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{access_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{base_url}}/categories/",
+            "body": { "mode": "raw", "raw": "{ \"name\": \"Books\", \"slug\": \"books\" }" }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": ["let data = pm.response.json();", "pm.environment.set('category_slug', data.slug);"] }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Create Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{access_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{base_url}}/products/",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"name\": \"Sample Book\", \"description\": \"A test product\", \"price\": \"9.99\", \"category\": 1, \"stock\": 10 }"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": ["let data = pm.response.json();", "pm.environment.set('product_slug', data.slug);"] }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Cart",
+      "item": [
+        {
+          "name": "Add to Cart",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{access_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{base_url}}/cart-items/",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"product\": \"{{product_slug}}\", \"quantity\": 1 }"
+            }
+          }
+        },
+        {
+          "name": "Checkout Cart",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/cart/{{cart_id}}/checkout/"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "List Orders",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{access_token}}" }],
+            "url": "{{base_url}}/orders/"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reviews",
+      "item": [
+        {
+          "name": "Create Review",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{access_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{base_url}}/reviews/",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"product\": \"{{product_slug}}\", \"rating\": 5, \"comment\": \"Great book!\" }"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": ["let data = pm.response.json();", "pm.environment.set('review_id', data.id);"] }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Wishlist",
+      "item": [
+        {
+          "name": "Toggle Wishlist",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{access_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{base_url}}/wishlist/toggle/",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"product\": \"{{product_slug}}\" }"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

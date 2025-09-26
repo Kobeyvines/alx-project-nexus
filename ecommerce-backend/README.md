@@ -1,14 +1,22 @@
 # 🌐 ALX Project Nexus
 
-This repository documents my journey through the **ALX ProDev Backend Engineering Program**.  
-It serves as a hub for my major learnings, reflections, and best practices in backend development.
-
+This repository showcases my journey through the ALX ProDev Backend Engineering Program, with a focus on building a production-ready e-commerce backend.
+It documents my learnings, challenges, and best practices applied while designing and implementing the system.
 ---
 
 ## 📖 Program Overview
-The **ProDev Backend Engineering** program provided a hands-on, project-driven approach to building scalable and production-ready backend systems.  
-Key focus areas included Python, Django, API design, cloud services, containerization, and DevOps practices.
+The E-Commerce Backend project simulates a real-world online store.
+Users can browse products, manage carts, place orders, and track order history. Admins can manage products, categories, and user roles.
 
+Key focus areas included:
+
+Backend APIs using Django REST Framework
+
+Database modeling for products, carts, orders, and users
+
+Security & Authentication with JWT and role-based access
+
+Deployment using Docker and CI/CD pipelines
 ---
 
 ## 🔑 Key Learnings
@@ -35,8 +43,8 @@ Key focus areas included Python, Django, API design, cloud services, containeriz
 ### ⚡ Challenges & Solutions
 - **Challenge:** Debugging Docker container networking  
   - *Solution:* Learned volume mounts, networking bridges, and Docker Compose.  
-- **Challenge:** Scaling API requests under load  
-  - *Solution:* Implemented caching + async tasks with Celery and Redis.  
+- **Challenge:** Preventing modification of checked-out carts  
+  - *Solution:* Added validation in perform_update and perform_destroy methods in the CartItemViewSet.
 - **Challenge:** CI/CD deployment failures  
   - *Solution:* Broke pipelines into stages (build → test → deploy) and added logging.
 
